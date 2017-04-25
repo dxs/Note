@@ -35,7 +35,13 @@
 			<Setter Property="FontSize" Value="20" />
 		</Style>
 
+		<Style TargetType="TextBox" x:Key="BoxStd">
+			<Setter Property="TextWrapping" Value="WrapWholeWords" />
+		</Style>
+		
+		
 		<note:TitleConverter x:Key="TitleConverter" />
+		<note:DateConverter x:Key="DateConverter" />
 	</Page.Resources>
 	
     <Grid x:Name="TopGrid">
@@ -44,11 +50,9 @@
 			<ColumnDefinition />
 		</Grid.ColumnDefinitions>
 
-		<!--panel-->
-		<RelativePanel Grid.Column="0" MinWidth="40" x:Name="MainGrid" SizeChanged="Page_SizeChanged">
-			
-		</RelativePanel>
-
+		<!-- transparent panel-->
+		<RelativePanel Grid.Column="0" MinWidth="40" x:Name="MainGrid" SizeChanged="Page_SizeChanged"/>
+		<!--PANEL-->
 		<Grid>
 			<StackPanel Margin="10">
 				<Grid>
@@ -69,7 +73,7 @@
 										<RowDefinition Height="Auto" />
 									</Grid.RowDefinitions>
 									<TextBlock Grid.Row="0" Style="{StaticResource BlockStd}" Text="{x:Bind Title, Mode=OneWay, Converter={StaticResource TitleConverter}}" />
-									<TextBlock Grid.Row="1" Style="{StaticResource BlockDateTimeStd}" Text="{x:Bind LastModified, Mode=OneWay}" />
+									<TextBlock Grid.Row="1" Style="{StaticResource BlockDateTimeStd}" Text="{x:Bind LastModified, Mode=OneWay, Converter={StaticResource DateConverter}}" />
 								</Grid>
 							</DataTemplate>
 						</ListView.ItemTemplate>
@@ -80,7 +84,20 @@
 
 		<!--Content-->
 		<Grid Grid.Column="1" Background="White">
-			
+			<StackPanel Margin="10">
+				<!--Header-->
+				<StackPanel Orientation="Horizontal" Margin="10">
+					<StackPanel>
+						<TextBox TextAlignment="Left" HorizontalAlignment="Stretch" BorderThickness="0" TextWrapping="NoWrap" Name="TitleNote" Text="{x:Bind Notes.SelectedNote.Title,Mode=TwoWay,Converter={StaticResource TitleConverter}}"/>
+						<Rectangle Margin="8,0,0,0" Height="1" Fill="Gray" Width="{Binding ElementName=TitleNote,Path=Width}" VerticalAlignment="Top"/>
+						<TextBlock Text="{x:Bind Notes.SelectedNote.LastModified,Mode=OneWay,Converter={StaticResource DateConverter}}" Style="{StaticResource BlockDateTimeStd}"/>
+					</StackPanel>
+				</StackPanel>
+				<!--Content-->
+				<Grid Margin="10">
+					<TextBox BorderThickness="0" Margin="0,20,0,20" MinHeight="100" Text="{x:Bind Notes.SelectedNote.Body,Mode=TwoWay}" Style="{StaticResource BoxStd}"/>
+				</Grid>
+			</StackPanel>
 		</Grid>
 	</Grid>
 </Page>

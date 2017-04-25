@@ -35,12 +35,27 @@ namespace Note
             this.InitializeComponent();
 			_compositor = ElementCompositionPreview.GetElementVisual(this).Compositor;
 			applyAcrylicAccent(MainGrid);
-			Notes.AddEmptyNote();
+			SetupBackup();
+		}
+
+		private async void SetupBackup()
+		{
+			Notes = await Filer.DeserelizeDataFromJson();
+			if (Notes.Notes.Count > 0)
+				Notes.SelectedNote = Notes.Notes[0];
+
+			DispatcherTimer timer = new DispatcherTimer();
+			timer.Interval = new TimeSpan(0, 0, 5);
+			timer.Tick += async (e, o) =>
+			{
+				await Filer.SerializeDataToJson(Notes);
+			};
+			timer.Start();
 		}
 
 		private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-
+			Notes.SelectedNote = Notes.Notes[(sender as ListView).SelectedIndex];
 		}
 
 		#region BackDropBrush
