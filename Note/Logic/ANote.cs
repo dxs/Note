@@ -14,7 +14,7 @@ namespace Note.Logic
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		private DateTime lastModified;
+		private DateTime lastModified = DateTime.Now;
 		[DataMember]
 		public DateTime LastModified
 		{
@@ -44,7 +44,29 @@ namespace Note.Logic
 		}		
 	}
 
-	public class TitleConverter : IValueConverter
+	public class TitlePaneConverter : IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, string language)
+		{
+			string v = (string)value;
+
+			if (v == string.Empty)
+				return "Sans titre";
+			if (v.Count() > 30)
+			{
+				v = v.Substring(0, 27);
+				v += "...";
+			}
+			return v;
+		}
+
+		public object ConvertBack(object value, Type targetType, object parameter, string language)
+		{
+			return value as string;
+		}
+	}
+
+	public class TitleContentConverter : IValueConverter
 	{
 		public object Convert(object value, Type targetType, object parameter, string language)
 		{
@@ -71,6 +93,25 @@ namespace Note.Logic
 			if (DateTime.Now.Subtract(t).TotalHours < 48.0)
 				return "Hier";
 			return "Plus ancien";
+		}
+
+		public object ConvertBack(object value, Type targetType, object parameter, string language)
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	public class BodyMaxSizeConverter : IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, string language)
+		{
+			string text = (string)value;
+			if (text.Count() > 30)
+			{
+				text = text.Substring(0, 27);
+				text += "...";
+			}
+			return text;
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, string language)

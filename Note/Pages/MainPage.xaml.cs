@@ -3,6 +3,7 @@ using Note.Logic;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Numerics;
@@ -80,6 +81,27 @@ namespace Note
 		}
 
 		#endregion
+
+		private void Button_Delete(object sender, RoutedEventArgs e)
+		{
+			try
+			{
+				Notes.Notes.Remove(Notes.SelectedNote);
+			}
+			catch(Exception ex)
+			{
+				Debug.WriteLine(ex.Message);
+			}
+			try
+			{
+				if (Notes.Notes.Count > 0)
+					Notes.SelectedNote = Notes.Notes[0];
+			}
+			catch(Exception ex)
+			{
+				Debug.WriteLine(ex.Message);
+			}
+		}
 
 		private void Button_Add(object sender, RoutedEventArgs e)
 		{

@@ -29,7 +29,7 @@ namespace Note.Logic
 
 		public void AddEmptyNote()
 		{
-			Notes.Insert(0, new ANote());
+			Notes.Insert(0, new ANote() { Title = "Sans titre", Body = string.Empty });
 		}
 	}
 }

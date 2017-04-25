@@ -13,7 +13,7 @@
 			<Setter Property="Foreground" Value="Black"/>
 			<Setter Property="HorizontalAlignment" Value="Stretch" />
 			<Setter Property="VerticalAlignment" Value="Center" />
-			<Setter Property="Margin" Value="10,10,10,0" />
+			<Setter Property="Margin" Value="10,0,10,0" />
 		</Style>
 		<Style TargetType="TextBlock" x:Key="BlockTitleStd" BasedOn="{StaticResource BlockStd}">
 			<Setter Property="FontSize" Value="20" />
@@ -40,8 +40,10 @@
 		</Style>
 		
 		
-		<note:TitleConverter x:Key="TitleConverter" />
+		<note:TitlePaneConverter x:Key="TitlePaneConverter" />
+		<note:TitleContentConverter x:Key="TitleContentConverter" />
 		<note:DateConverter x:Key="DateConverter" />
+		<note:BodyMaxSizeConverter x:Key="BodyMaxSizeConverter" />
 	</Page.Resources>
 	
     <Grid x:Name="TopGrid">
@@ -69,11 +71,13 @@
 							<DataTemplate x:DataType="note:ANote">
 								<Grid>
 									<Grid.RowDefinitions>
+										<RowDefinition Height="Auto" />
 										<RowDefinition />
 										<RowDefinition Height="Auto" />
 									</Grid.RowDefinitions>
-									<TextBlock Grid.Row="0" Style="{StaticResource BlockStd}" Text="{x:Bind Title, Mode=OneWay, Converter={StaticResource TitleConverter}}" />
-									<TextBlock Grid.Row="1" Style="{StaticResource BlockDateTimeStd}" Text="{x:Bind LastModified, Mode=OneWay, Converter={StaticResource DateConverter}}" />
+									<TextBlock Grid.Row="0" Style="{StaticResource BlockDateTimeStd}" Margin="10,10,10,0" Text="{x:Bind LastModified, Mode=OneWay, Converter={StaticResource DateConverter}}" />
+									<TextBlock Grid.Row="1" Style="{StaticResource BlockStd}" Text="{x:Bind Title, Mode=OneWay, Converter={StaticResource TitlePaneConverter}}" />
+									<TextBlock Grid.Row="2" Style="{StaticResource BlockDateTimeStd}" Text="{x:Bind Body,Mode=OneWay, Converter={StaticResource BodyMaxSizeConverter}}" />
 								</Grid>
 							</DataTemplate>
 						</ListView.ItemTemplate>
@@ -88,10 +92,11 @@
 				<!--Header-->
 				<StackPanel Orientation="Horizontal" Margin="10">
 					<StackPanel>
-						<TextBox TextAlignment="Left" HorizontalAlignment="Stretch" BorderThickness="0" TextWrapping="NoWrap" Name="TitleNote" Text="{x:Bind Notes.SelectedNote.Title,Mode=TwoWay,Converter={StaticResource TitleConverter}}"/>
+						<TextBox TextAlignment="Left" HorizontalAlignment="Stretch" BorderThickness="0" TextWrapping="NoWrap" Name="TitleNote" Text="{x:Bind Notes.SelectedNote.Title,Mode=TwoWay,Converter={StaticResource TitleContentConverter}}"/>
 						<Rectangle Margin="8,0,0,0" Height="1" Fill="Gray" Width="{Binding ElementName=TitleNote,Path=Width}" VerticalAlignment="Top"/>
 						<TextBlock Text="{x:Bind Notes.SelectedNote.LastModified,Mode=OneWay,Converter={StaticResource DateConverter}}" Style="{StaticResource BlockDateTimeStd}"/>
 					</StackPanel>
+					<Button Style="{StaticResource ButtonStd}" Content="&#xE107;" Click="Button_Delete"/>
 				</StackPanel>
 				<!--Content-->
 				<Grid Margin="10">
