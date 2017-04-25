@@ -1,4 +1,5 @@
-﻿using Note.Logic;
+﻿using Microsoft.Graphics.Canvas.Effects;
+using Note.Logic;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -33,6 +34,13 @@ namespace Note
         {
             this.InitializeComponent();
 			_compositor = ElementCompositionPreview.GetElementVisual(this).Compositor;
+			applyAcrylicAccent(MainGrid);
+			Notes.AddEmptyNote();
+		}
+
+		private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+
 		}
 
 		#region BackDropBrush
@@ -40,7 +48,7 @@ namespace Note
 		Compositor _compositor;
 		SpriteVisual _hostSprite;
 
-		private void Page_Loaded(object sender, RoutedEventArgs e)
+		private void applyAcrylicAccent(Panel e)
 		{
 			_hostSprite = _compositor.CreateSpriteVisual();
 			_hostSprite.Size = new Vector2((float)MainGrid.ActualWidth, (float)MainGrid.ActualHeight);
@@ -57,5 +65,10 @@ namespace Note
 		}
 
 		#endregion
+
+		private void Button_Add(object sender, RoutedEventArgs e)
+		{
+			Notes.AddEmptyNote();
+		}
 	}
 }

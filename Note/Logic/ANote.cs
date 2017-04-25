@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Data;
 
 namespace Note.Logic
 {
@@ -28,8 +29,23 @@ namespace Note.Logic
 		public ANote()
 		{
 			LastModified = DateTime.Now;
+		}		
+	}
+
+	public class TitleConverter : IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, string language)
+		{
+			string v = (string)value;
+
+			if (v == string.Empty)
+				return "Sans titre";
+			return v;
 		}
 
-		
+		public object ConvertBack(object value, Type targetType, object parameter, string language)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
