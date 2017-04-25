@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace Note.Logic
 {
@@ -16,8 +17,8 @@ namespace Note.Logic
 		{
 			try
 			{
-				var Folder = Windows.Storage.ApplicationData.Current.LocalFolder;
-				var file = await Folder.CreateFileAsync(filename + ".json", Windows.Storage.CreationCollisionOption.ReplaceExisting);
+				var Folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("Data",CreationCollisionOption.OpenIfExists);
+				var file = await Folder.CreateFileAsync(filename + ".json", CreationCollisionOption.ReplaceExisting);
 				var data = await file.OpenStreamForWriteAsync();
 
 				using (StreamWriter r = new StreamWriter(data))
@@ -30,7 +31,8 @@ namespace Note.Logic
 			}
 			catch (Exception e)
 			{
-				throw e;
+				//Cannot find file
+				return "";
 			}
 		}
 
@@ -39,7 +41,7 @@ namespace Note.Logic
 			try
 			{
 				var Note = new NoteHandler();
-				var Folder = Windows.Storage.ApplicationData.Current.LocalFolder;
+				var Folder = await ApplicationData.Current.LocalFolder.GetFolderAsync("Data");
 				var file = await Folder.GetFileAsync(fileName + ".json");
 				var data = await file.OpenReadAsync();
 
@@ -58,7 +60,7 @@ namespace Note.Logic
 			}
 			catch (Exception e)
 			{
-				throw e;
+				return new NoteHandler();
 			}
 		}
 

@@ -14,7 +14,7 @@ namespace Note.Logic
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		private DateTime lastModified = DateTime.Now;
+		private DateTime lastModified;
 		[DataMember]
 		public DateTime LastModified
 		{
