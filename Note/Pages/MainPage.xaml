@@ -10,7 +10,7 @@
 
 	<Page.Resources>
 		<Style TargetType="TextBlock" x:Key="BlockStd">
-			<Setter Property="Foreground" Value="Black"/>
+			<Setter Property="Foreground" Value="white"/>
 			<Setter Property="HorizontalAlignment" Value="Stretch" />
 			<Setter Property="VerticalAlignment" Value="Center" />
 			<Setter Property="Margin" Value="10,0,10,0" />
@@ -23,7 +23,7 @@
 		</Style>
 		<Style TargetType="TextBlock" x:Key="BlockDateTimeStd" BasedOn="{StaticResource BlockStd}">
 			<Setter Property="FontSize" Value="10" />
-			<Setter Property="Foreground" Value="Gray" />
+			<Setter Property="Foreground" Value="WhiteSmoke" />
 			<Setter Property="Margin" Value="10,0,10,0" />
 		</Style>
 
@@ -53,7 +53,9 @@
 		</Grid.ColumnDefinitions>
 
 		<!-- transparent panel-->
-		<RelativePanel Grid.Column="0" MinWidth="40" x:Name="MainGrid" SizeChanged="Page_SizeChanged"/>
+		<RelativePanel Grid.Column="0" Grid.ColumnSpan="2" MinWidth="40" x:Name="MainGrid" SizeChanged="Page_SizeChanged"/>
+		<RelativePanel Grid.Column="0" Width="{Binding ElementName=MainGrid,Path=Width}" Background="#28000000"/>
+		<RelativePanel Grid.Column="1" Width="{Binding ElementName=MainGrid,Path=Width}" Background="#A0FFFFFF"/>
 		<!--PANEL-->
 		<Grid>
 			<StackPanel Margin="10">
@@ -87,12 +89,12 @@
 		</Grid>
 
 		<!--Content-->
-		<Grid Grid.Column="1" Background="White">
+		<Grid Grid.Column="1">
 			<StackPanel Margin="10">
 				<!--Header-->
 				<StackPanel Orientation="Horizontal" Margin="10">
 					<StackPanel>
-						<TextBox TextAlignment="Left" HorizontalAlignment="Stretch" BorderThickness="0" TextWrapping="NoWrap" Name="TitleNote" Text="{x:Bind Notes.SelectedNote.Title,Mode=TwoWay,Converter={StaticResource TitleContentConverter}}"/>
+						<TextBox TextAlignment="Left" HorizontalAlignment="Stretch" BorderThickness="0" Background="Transparent" TextWrapping="NoWrap" Name="TitleNote" Text="{x:Bind Notes.SelectedNote.Title,Mode=TwoWay,Converter={StaticResource TitleContentConverter}}"/>
 						<Rectangle Margin="8,0,0,0" Height="1" Fill="Gray" Width="{Binding ElementName=TitleNote,Path=Width}" VerticalAlignment="Top"/>
 						<TextBlock Text="{x:Bind Notes.SelectedNote.LastModified,Mode=OneWay,Converter={StaticResource DateConverter}}" Style="{StaticResource BlockDateTimeStd}"/>
 					</StackPanel>
