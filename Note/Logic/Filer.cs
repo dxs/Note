@@ -48,8 +48,8 @@ namespace Note.Logic
 				using (StreamReader r = new StreamReader(data.AsStream()))
 				{
 					string text = r.ReadToEnd();
-					if (text == string.Empty)
-						return Note;
+					if (text == string.Empty || text == "[]")
+						return RandomNotes();
 					var a = JsonConvert.DeserializeObject<ObservableCollection<ANote>>(text);
 					foreach (var i in a)
 					{
@@ -64,5 +64,16 @@ namespace Note.Logic
 			}
 		}
 
+		private static NoteHandler RandomNotes()
+		{
+			NoteHandler n = new NoteHandler();
+			n.Notes = new ObservableCollection<ANote>()
+			{
+				new ANote() {Title = "Bienvenue", Body = "Bienvenue dans cette application. Elle permet de prendre des notes le plus facilement possible. Allez-y, essayez!", LastModified = DateTime.Now},
+				new ANote(){Title = "Réunion",Body ="Par exemple prenez des notes sur votre dernière réunion",LastModified = DateTime.Now.Subtract(new TimeSpan(1,0,0,0)) },
+			};
+			n.SelectedNote = n.Notes[0];
+			return n;
+		}
 	}
 }
