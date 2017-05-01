@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
 namespace Note.Logic
@@ -13,6 +14,14 @@ namespace Note.Logic
 	public class ANote : INotifyPropertyChanged
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
+
+		private bool isFavorite = false;
+		[DataMember]
+		public bool IsFavorite
+		{
+			get { return isFavorite; }
+			set { isFavorite = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsFavorite))); }
+		}
 
 		private DateTime lastModified;
 		[DataMember]
@@ -112,6 +121,24 @@ namespace Note.Logic
 				text += "...";
 			}
 			return text;
+		}
+
+		public object ConvertBack(object value, Type targetType, object parameter, string language)
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	public class BoolToVisibilityConverter : IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, string language)
+		{
+			bool? a = (value as bool?);
+			bool tmp = true;
+			if (a == null || a == false)
+				tmp = false;
+
+			return  tmp ? Visibility.Visible : Visibility.Collapsed;
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, string language)
