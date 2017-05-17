@@ -1,16 +1,17 @@
 ﻿<Page
-    x:Class="Note.MainPage"
-	xmlns:media="using:Windows.UI.Xaml.Media"
+    x:Class="_10Notes.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Note"
-	xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:local="using:_10Notes"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:note="using:Note.Logic"
+	xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:media="using:Windows.UI.Xaml.Media"
     mc:Ignorable="d">
 
 	<Page.Resources>
+
 		<Style TargetType="TextBlock" x:Key="BlockStd">
 			<Setter Property="Foreground" Value="white"/>
 			<Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -85,23 +86,14 @@
 			</controls:SlidableListItem>
 		</DataTemplate>
 
-		<AcrylicBrush x:Key="MyAcrylicBrush"
-        BackgroundSource="HostBackdrop"
-        TintColor="#FFFF0000"
-        TintOpacity="0.8"
-        FallbackColor="#FFFF7F7F"/>
+
 	</Page.Resources>
-	
-    <Grid x:Name="TopGrid">
+
+	<Grid x:Name="TopGrid" Background="{ThemeResource SystemControlAcrylicElementBrush}">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="auto" />
 			<ColumnDefinition />
 		</Grid.ColumnDefinitions>
-
-		<!-- transparent panel-->
-		<RelativePanel Grid.Column="0" Grid.ColumnSpan="2" MinWidth="40" x:Name="MainGrid" SizeChanged="Page_SizeChanged"/>
-		<RelativePanel Grid.Column="0" Width="{Binding ElementName=MainGrid,Path=Width}" Background="#28000000"/>
-		<RelativePanel Grid.Column="1" Width="{Binding ElementName=MainGrid,Path=Width}" Background="#A0FFFFFF"/>
 		<!--PANEL-->
 		<Grid>
 			<StackPanel Margin="0">

@@ -38,9 +38,6 @@ namespace Note
 
 		private static void RichTextPropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
 		{
-			((RichEditBox)dependencyObject).Blocks.Add(
-				XamlReader.Load((string)dependencyPropertyChangedEventArgs.NewValue) as Paragraph);
-
 		}
 	}
 
