@@ -169,6 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
+    <PRIResource Include="Strings\fr-FR\Resources.resw" />
     <None Include="_10Note_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
