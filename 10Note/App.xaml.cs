@@ -51,7 +51,7 @@ namespace _10Note
             
         private ActivationService CreateActivationService()
         {
-            return new ActivationService(this, typeof(Views.MainPage), new Views.ShellPage());
+            return new ActivationService(this, typeof(Views.MasterDetailPage), new Views.ShellPage());
         }
     }
 }

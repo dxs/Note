@@ -17,35 +17,52 @@
             x:Name="TitlePage"
             Text="{x:Bind MasterMenuItem.Title, Mode=OneWay}"
             FontSize="28" FontWeight="SemiLight" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" VerticalAlignment="Center"
-            Margin="0,0,12,7"/>
+            Margin="10,10,0,0"/>
 
-        <ScrollViewer
-            Grid.Row="1"
-            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-            ScrollViewer.VerticalScrollBarVisibility="Auto"
-            ScrollViewer.VerticalScrollMode="Auto">
+        <Pivot Grid.Row="1">
+            <PivotItem Header="Ink">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <InkCanvas x:Name="DrawInkCanvas" Grid.Row="0" Grid.RowSpan="2"/>
+                    <Grid Background="{ThemeResource InkToolbarButtonBackgroundThemeBrush}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <!--TOOLS-->
+                            <Button Background="Transparent" x:Name="ConvertTextButton" VerticalAlignment="Stretch" Click="ConvertTextButton_Click">
+                                <SymbolIcon Symbol="Document" />
+                            </Button>
+                            <Button Background="Transparent" x:Name="SaveButton" VerticalAlignment="Stretch" Click="SaveButton_Click">
+                                <SymbolIcon Symbol="Save" />
+                            </Button>
+                        </StackPanel>
+                        <InkToolbar Grid.Column="1" x:Name="inkToolbar" TargetInkCanvas="{x:Bind DrawInkCanvas}" Grid.Row="0" HorizontalAlignment="Right"/>
+                    </Grid>
+                </Grid>
+            </PivotItem>
 
-            <!--The SystemControlPageBackgroundChromeLowBrush background represents where you should place your detail content.-->
-            <Grid Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
-
-                <!--Replate FontIcon and TextBlock with your detail content.-->
-                <FontIcon 
-                    FontSize="90" 
-                    Glyph="{x:Bind MasterMenuItem.SymbolAsChar, Mode=OneWay}"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center"/>
-                <TextBlock
+            <PivotItem>
+                <ScrollViewer Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollMode="Auto">
+                    <Grid Background="Transparent">
+                        <TextBlock
                     Text="{x:Bind MasterMenuItem.Description, Mode=OneWay}"
                     FontSize="16" FontWeight="Normal" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"
-                    VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="12,12,12,12"/>
-            </Grid>
-        </ScrollViewer>
+                    VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10"/>
+                    </Grid>
+                </ScrollViewer>
+            </PivotItem>
+        </Pivot>
         <!--  Adaptive triggers  -->
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="WindowStates">
                 <VisualState x:Name="WideState">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="640"/>
+                        <AdaptiveTrigger MinWindowWidth="500"/>
                     </VisualState.StateTriggers>
                 </VisualState>
                 <VisualState x:Name="NarrowState">

@@ -14,7 +14,7 @@
     </Page.Transitions>
     <Page.Resources>
         <DataTemplate x:Key="MasterListViewItemTemplate" x:DataType="model:SampleModel">
-            <Grid Margin="12,12,12,12">
+            <Grid Margin="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -35,7 +35,7 @@
 
     <Grid
         x:Name="ContentArea"
-        Padding="12,0,12,0">
+        Padding="10">
 
         <Grid.RowDefinitions>
             <RowDefinition x:Name="TitleRow" Height="Auto"/>
@@ -52,7 +52,7 @@
             x:Uid="MasterDetailPage_Title"
             Grid.ColumnSpan="2"
             FontSize="28" FontWeight="SemiLight" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" VerticalAlignment="Center"
-            Margin="0,0,12,7" Visibility="Collapsed"/>
+            Margin="10" Visibility="Collapsed"/>
 
         <Grid
             x:Name="MasterArea"
@@ -67,7 +67,7 @@
                 x:Name="Title"
                 x:Uid="MasterDetailPage_Title"
                 FontSize="28" FontWeight="SemiLight" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" VerticalAlignment="Center"
-                Margin="0,0,12,7"/>
+                Margin="10"/>
 
             <!--The SystemControlPageBackgroundChromeLowBrush background represents where you should place your master content.-->
             <ListView
@@ -78,7 +78,7 @@
                 ItemContainerTransitions="{x:Null}"
                 ItemTemplate="{StaticResource MasterListViewItemTemplate}"
                 IsItemClickEnabled="True"
-                Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}"
+                Background="Transparent"
                 ItemClick="MasterListView_ItemClick">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
@@ -93,7 +93,7 @@
             x:Name="DetailContentPresenter"
             Grid.Row="1"
             Grid.Column="1"
-            Padding="24,0,0,0">
+            Padding="10">
 
             <views:MasterDetailDetailControl
                 x:Name="DetailControl"
@@ -108,7 +108,7 @@
                         <AdaptiveTrigger MinWindowWidth="640"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="ContentArea.Padding" Value="12,0,12,0"/>
+                        <Setter Target="ContentArea.Padding" Value="10"/>
                         <Setter Target="MasterColumn.Width" Value="296" />
                     </VisualState.Setters>
                 </VisualState>
@@ -118,7 +118,7 @@
                         <AdaptiveTrigger MinWindowWidth="0"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="TitlePage.Margin" Value="48,0,12,7"/>
+                        <Setter Target="TitlePage.Margin" Value="10"/>
                         <Setter Target="TitleRow.Height" Value="48"/>
                         <Setter Target="MasterRow.Height" Value="Auto"/>
                         <Setter Target="TitlePage.Visibility" Value="Visible"/>
@@ -127,7 +127,7 @@
                         <Setter Target="MasterColumn.Width" Value="*" />
                         <Setter Target="DetailColumn.Width" Value="0" />
                         <Setter Target="MasterListView.SelectionMode" Value="None" />
-                        <Setter Target="MasterArea.Background" Value="{ThemeResource SystemControlBackgroundAltHighBrush}"/>
+                        <Setter Target="MasterArea.Background" Value="Transparent"/>
                         <Setter Target="MasterListView.Margin" Value="-12,0"/>
                     </VisualState.Setters>
                 </VisualState>

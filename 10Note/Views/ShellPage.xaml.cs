@@ -9,6 +9,12 @@ using _10Note.Services;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.Composition;
+using Windows.UI.Xaml.Hosting;
+using System.Numerics;
+using Windows.UI.ViewManagement;
+using Windows.ApplicationModel.Core;
+using Windows.UI;
 
 namespace _10Note.Views
 {
@@ -60,8 +66,33 @@ namespace _10Note.Views
             NavigationService.Frame = shellFrame;
             NavigationService.Frame.Navigated += NavigationService_Navigated;
             PopulateNavItems();
+            applyAcrylicAccent(MainGrid);
         }
 
+#region Acrylic
+        private void applyAcrylicAccent(Panel e)
+        {
+            ApplicationViewTitleBar formattableTitleBar = ApplicationView.GetForCurrentView().TitleBar;
+            formattableTitleBar.ButtonBackgroundColor = Colors.Transparent;
+            CoreApplicationViewTitleBar coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+            coreTitleBar.ExtendViewIntoTitleBar = true;
+            _compositor = ElementCompositionPreview.GetElementVisual(this).Compositor;
+            _hostSprite = _compositor.CreateSpriteVisual();
+            _hostSprite.Size = new Vector2((float)MainGrid.ActualWidth, (float)MainGrid.ActualHeight);
+
+            ElementCompositionPreview.SetElementChildVisual(
+                    MainGrid, _hostSprite);
+            _hostSprite.Brush = _compositor.CreateHostBackdropBrush();
+        }
+        Compositor _compositor;
+        SpriteVisual _hostSprite;
+
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (_hostSprite != null)
+                _hostSprite.Size = e.NewSize.ToVector2();
+        }
+#endregion
         private void PopulateNavItems()
         {
             _primaryItems.Clear();
@@ -69,8 +100,7 @@ namespace _10Note.Views
 
             // More on Segoe UI Symbol icons: https://docs.microsoft.com/windows/uwp/style/segoe-ui-symbol-font
             // Edit String/en-US/Resources.resw: Add a menu item title for each page
-            _primaryItems.Add(ShellNavigationItem.FromType<MainPage>("Shell_Main".GetLocalized(), Symbol.Document));
-            _primaryItems.Add(ShellNavigationItem.FromType<MasterDetailPage>("Shell_MasterDetail".GetLocalized(), Symbol.Document));
+            _primaryItems.Add(ShellNavigationItem.FromType<MasterDetailPage>("Shell_MasterDetail".GetLocalized(), Symbol.Library));
             _secondaryItems.Add(ShellNavigationItem.FromType<SettingsPage>("Shell_Settings".GetLocalized(), Symbol.Setting));
         }
 
