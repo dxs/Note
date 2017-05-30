@@ -2,21 +2,45 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.UI.Xaml;
 
 namespace _10Note.Models
 {
-	public class Workspace
+	public class Workspace : INotifyPropertyChanged
 	{
 		public string WName = "default";
-		public ObservableCollection<Note> NoteCollection = new ObservableCollection<Note>();
+		private ObservableCollection<Note> noteCollection = new ObservableCollection<Note>();
+		public ObservableCollection<Note> NoteCollection
+		{
+			get { return noteCollection; }
+			set { noteCollection = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NoteCollection))); }
+		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
 
 		public Workspace(string workspaceName = "default")
 		{
 			WName = workspaceName;
+
+			Work();
+		}
+
+		private async void Work()
+		{
+			/*Try to Load*/
+			bool loaded = await LoadWorkspace();
+
+			//DispatcherTimer AutoSaveTimer = new DispatcherTimer
+			//{
+			//	Interval = new TimeSpan(0, 0, 3)
+			//};
+			//AutoSaveTimer.Tick += async (e, o) => await SaveWorkspace();
+			//AutoSaveTimer.Start();
 		}
 
 		#region Collection Operation

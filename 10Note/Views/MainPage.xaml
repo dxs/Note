@@ -10,7 +10,7 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-		<controls:MasterDetailsView ItemsSource="{x:Bind workspace.NoteCollection}"
+		<controls:MasterDetailsView ItemsSource="{x:Bind workspace.NoteCollection,Mode=OneWay}"
                                     NoSelectionContent="Select an item to view, or create a new one"
                                     Foreground="Black">
 			<controls:MasterDetailsView.ItemTemplate>

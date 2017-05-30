@@ -28,7 +28,7 @@ namespace _10Note
         public MainPage()
         {
 			workspace = new Workspace();
-			workspace.AddNote(new Note("Titre","Ceci est une note"));
+			//workspace.AddNote(new Note("Titre","Ceci est une note"));
 			this.InitializeComponent();
         }
     }
