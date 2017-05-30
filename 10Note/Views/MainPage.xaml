@@ -25,8 +25,8 @@
 				<DataTemplate>
 					<RelativePanel Margin="24">
 						<Ellipse x:Name="FromEllipse" Height="50" Width="50" Fill="Gray"></Ellipse>
-						<TextBox PlaceholderText="Titre" x:Name="SubjectLine" Text="{Binding Title, Mode=OneWay}" RelativePanel.RightOf="FromEllipse" Margin="12,-6,0,0"/>
-						<TextBox PlaceholderText="Contenu" x:Name="Body" Text="{Binding Body, Mode=OneWay}" TextWrapping="Wrap" RelativePanel.Below="FromEllipse" Margin="0,12,0,0"/>
+						<TextBox PlaceholderText="Titre" x:Name="SubjectLine" Text="{Binding Title, Mode=TwoWay}" RelativePanel.RightOf="FromEllipse" Margin="12,-6,0,0"/>
+						<TextBox PlaceholderText="Contenu" x:Name="Body" Text="{Binding Body, Mode=TwoWay}" TextWrapping="Wrap" RelativePanel.Below="FromEllipse" Margin="0,12,0,0"/>
 					</RelativePanel>
 				</DataTemplate>
 			</controls:MasterDetailsView.DetailsTemplate>
@@ -38,7 +38,13 @@
 								<CompositeTransform ScaleX="2" ScaleY="2"/>
 							</SymbolIcon.RenderTransform>
 						</SymbolIcon>
-						<TextBlock Text="{Binding}" FontSize="24" Margin="0,12"/>
+							<TextBlock Text="{Binding}" FontSize="24" Margin="0,12"/>
+						<Button Click="Add_Click" HorizontalAlignment="Stretch" Margin="10" Background="LightBlue">
+							<StackPanel>
+								<SymbolIcon Symbol="Add" />
+								<TextBlock Text="Add" />
+							</StackPanel>
+						</Button>
 					</StackPanel>
 				</DataTemplate>
 			</controls:MasterDetailsView.NoSelectionContentTemplate>

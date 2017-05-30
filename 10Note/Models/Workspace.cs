@@ -46,7 +46,10 @@ namespace _10Note.Models
 		#region Collection Operation
 		public void AddNote(Note _note)
 		{
-			NoteCollection.Insert(0, _note);
+			if (NoteCollection.Count <= 0)
+				NoteCollection.Add(_note);
+			else
+				NoteCollection.Insert(0, _note);
 		}
 
 		public void RemoveNote(int index)
@@ -67,6 +70,8 @@ namespace _10Note.Models
 			try
 			{
 				NoteCollection = await SettingsStorageExtensions.ReadAsync<ObservableCollection<Note>>(ApplicationData.Current.LocalFolder, WName);
+				if (NoteCollection == null)
+					NoteCollection = new ObservableCollection<Note>();
 			}
 			catch(Exception e)
 			{

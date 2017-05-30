@@ -48,7 +48,7 @@ namespace _10Note
 
 		private void Add_Click(object sender, RoutedEventArgs e)
 		{
-			workspace.AddNote(new Note());
+			workspace.AddNote(new Note("Title","Body"));
 		}
 
 		private void Remove_Click(object sender, RoutedEventArgs e)
