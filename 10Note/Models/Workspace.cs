@@ -35,12 +35,12 @@ namespace _10Note.Models
 			/*Try to Load*/
 			bool loaded = await LoadWorkspace();
 
-			//DispatcherTimer AutoSaveTimer = new DispatcherTimer
-			//{
-			//	Interval = new TimeSpan(0, 0, 3)
-			//};
-			//AutoSaveTimer.Tick += async (e, o) => await SaveWorkspace();
-			//AutoSaveTimer.Start();
+			DispatcherTimer AutoSaveTimer = new DispatcherTimer
+			{
+				Interval = new TimeSpan(0, 0, 3)
+			};
+			AutoSaveTimer.Tick += async (e, o) => await SaveWorkspace();
+			AutoSaveTimer.Start();
 		}
 
 		#region Collection Operation

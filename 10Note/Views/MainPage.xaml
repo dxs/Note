@@ -9,10 +9,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+	<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 		<controls:MasterDetailsView ItemsSource="{x:Bind workspace.NoteCollection,Mode=OneWay}"
                                     NoSelectionContent="Select an item to view, or create a new one"
-                                    Foreground="Black">
+                                    Foreground="Black" x:Name="MasterViewList" >
 			<controls:MasterDetailsView.ItemTemplate>
 				<DataTemplate x:DataType="models:Note">
 					<StackPanel Margin="0,8">
@@ -25,8 +25,8 @@
 				<DataTemplate>
 					<RelativePanel Margin="24">
 						<Ellipse x:Name="FromEllipse" Height="50" Width="50" Fill="Gray"></Ellipse>
-						<TextBlock x:Name="SubjectLine" Text="{Binding Title, Mode=OneWay}" Style="{ThemeResource SubtitleTextBlockStyle}" RelativePanel.RightOf="FromEllipse" Margin="12,-6,0,0"/>
-						<TextBlock x:Name="Body" Text="{Binding Body, Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" RelativePanel.Below="FromEllipse" Margin="0,12,0,0"/>
+						<TextBox PlaceholderText="Titre" x:Name="SubjectLine" Text="{Binding Title, Mode=OneWay}" RelativePanel.RightOf="FromEllipse" Margin="12,-6,0,0"/>
+						<TextBox PlaceholderText="Contenu" x:Name="Body" Text="{Binding Body, Mode=OneWay}" TextWrapping="Wrap" RelativePanel.Below="FromEllipse" Margin="0,12,0,0"/>
 					</RelativePanel>
 				</DataTemplate>
 			</controls:MasterDetailsView.DetailsTemplate>
@@ -43,5 +43,17 @@
 				</DataTemplate>
 			</controls:MasterDetailsView.NoSelectionContentTemplate>
 		</controls:MasterDetailsView>
+		
 	</Grid>
+	<Page.BottomAppBar>
+		<CommandBar Closing="CommandBar_Closing" Opening="CommandBar_Opening" DefaultLabelPosition="Right" ClosedDisplayMode="Compact">
+			<AppBarButton Icon="Comment" Label="Contact"/>
+			<AppBarButton Icon="Setting" Label="Settings"/>
+			<AppBarSeparator />
+			<AppBarButton Icon="Add" Label="Add" Click="Add_Click"/>
+			<AppBarButton Icon="Save" Label="Save" Click="Save_Click" />
+			<AppBarButton Icon="Delete" Label="Remove" Click="Remove_Click" />
+			
+		</CommandBar>
+	</Page.BottomAppBar>
 </Page>
