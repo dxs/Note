@@ -11,13 +11,13 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 		<controls:MasterDetailsView ItemsSource="{x:Bind workspace.NoteCollection}"
-                                    NoSelectionContent="Select an item to view"
+                                    NoSelectionContent="Select an item to view, or create a new one"
                                     Foreground="Black">
 			<controls:MasterDetailsView.ItemTemplate>
 				<DataTemplate x:DataType="models:Note">
 					<StackPanel Margin="0,8">
-						<TextBlock Text="{x:Bind Title}" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-						<TextBlock Text="{x:Bind Body}" Style="{ThemeResource BodyTextBlockStyle}" Opacity=".6" MaxLines="1"/>
+						<TextBlock Text="{x:Bind Title, Mode=OneWay}" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+						<TextBlock Text="{x:Bind Body, Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" Opacity=".6" MaxLines="1"/>
 					</StackPanel>
 				</DataTemplate>
 			</controls:MasterDetailsView.ItemTemplate>
@@ -25,8 +25,8 @@
 				<DataTemplate>
 					<RelativePanel Margin="24">
 						<Ellipse x:Name="FromEllipse" Height="50" Width="50" Fill="Gray"></Ellipse>
-						<TextBlock x:Name="SubjectLine" Text="{Binding Title}" Style="{ThemeResource SubtitleTextBlockStyle}" RelativePanel.RightOf="FromEllipse" Margin="12,-6,0,0"/>
-						<TextBlock x:Name="Body" Text="{Binding Body}" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" RelativePanel.Below="SubjectLine" Margin="0,12,0,0"/>
+						<TextBlock x:Name="SubjectLine" Text="{Binding Title, Mode=OneWay}" Style="{ThemeResource SubtitleTextBlockStyle}" RelativePanel.RightOf="FromEllipse" Margin="12,-6,0,0"/>
+						<TextBlock x:Name="Body" Text="{Binding Body, Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" RelativePanel.Below="FromEllipse" Margin="0,12,0,0"/>
 					</RelativePanel>
 				</DataTemplate>
 			</controls:MasterDetailsView.DetailsTemplate>

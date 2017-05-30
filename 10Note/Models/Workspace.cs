@@ -19,6 +19,25 @@ namespace _10Note.Models
 			WName = workspaceName;
 		}
 
+		#region Collection Operation
+		public void AddNote(Note _note)
+		{
+			NoteCollection.Insert(0, _note);
+		}
+
+		public void RemoveNote(int index)
+		{
+			NoteCollection.RemoveAt(index);
+		}
+
+		public void RemoveNote(Note _note)
+		{
+			NoteCollection.Remove(_note);
+		}
+
+		#endregion
+
+		#region WorkSpace Operation
 		public async Task<bool> LoadWorkspace()
 		{
 			try
@@ -44,5 +63,7 @@ namespace _10Note.Models
 			}
 			return true;
 		}
+		#endregion
+
 	}
 }
