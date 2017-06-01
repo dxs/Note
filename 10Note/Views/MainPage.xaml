@@ -9,6 +9,19 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+	<Page.Resources>
+		<Style x:Key="TextBoxTitle" TargetType="TextBox">
+			<Setter Property="HorizontalAlignment" Value="Stretch" />
+			<Setter Property="VerticalAlignment" Value="Stretch" />
+			<Setter Property="FontSize" Value="40" />
+			<Setter Property="Margin" Value="10" />
+		</Style>
+
+		<Style x:Key="TextBoxBody" TargetType="TextBox" BasedOn="{StaticResource TextBoxTitle}">
+			<Setter Property="FontSize" Value="14" />
+		</Style>
+	</Page.Resources>
+	
 	<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 		<controls:MasterDetailsView ItemsSource="{x:Bind workspace.NoteCollection,Mode=OneWay}"
                                     NoSelectionContent="Select an item to view, or create a new one"
@@ -25,8 +38,8 @@
 				<DataTemplate>
 					<RelativePanel Margin="24">
 						<Ellipse x:Name="FromEllipse" Height="50" Width="50" Fill="Gray"></Ellipse>
-						<TextBox PlaceholderText="Titre" x:Name="SubjectLine" Text="{Binding Title, Mode=TwoWay}" RelativePanel.RightOf="FromEllipse" Margin="12,-6,0,0"/>
-						<TextBox PlaceholderText="Contenu" x:Name="Body" Text="{Binding Body, Mode=TwoWay}" TextWrapping="Wrap" RelativePanel.Below="FromEllipse" Margin="0,12,0,0"/>
+						<TextBox Style="{StaticResource TextBoxTitle}" PlaceholderText="Titre" x:Name="SubjectLine" Text="{Binding Title, Mode=TwoWay}" RelativePanel.RightOf="FromEllipse" HorizontalAlignment="Stretch" Margin="12,-6,0,0"/>
+						<TextBox Style="{StaticResource TextBoxBody}" PlaceholderText="Contenu" x:Name="Body" Text="{Binding Body, Mode=TwoWay}" TextWrapping="Wrap" RelativePanel.Below="FromEllipse" HorizontalAlignment="Stretch" Margin="0,12,0,0"/>
 					</RelativePanel>
 				</DataTemplate>
 			</controls:MasterDetailsView.DetailsTemplate>

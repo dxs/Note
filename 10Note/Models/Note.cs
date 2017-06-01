@@ -9,6 +9,13 @@ namespace _10Note.Models
 {
 	public class Note : INotifyPropertyChanged
 	{
+		private COLORS color = COLORS.GRAY;
+		public COLORS Color
+		{
+			get { return color; }
+			set { color = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Color))); }
+		}
+
 		private string title = string.Empty;
 		public string Title
 		{
@@ -31,7 +38,13 @@ namespace _10Note.Models
 
 		public Note() : this(string.Empty,string.Empty)
 		{
+			ChooseRandomColor();
+		}
 
+		private void ChooseRandomColor()
+		{
+			Random rand = new Random();
+			Color = rand.Next(0, Enum.GetNames(typeof(COLORS)).Length);
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
