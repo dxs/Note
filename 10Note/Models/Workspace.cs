@@ -13,6 +13,7 @@ namespace _10Note.Models
 {
 	public class Workspace : INotifyPropertyChanged
 	{
+		DispatcherTimer AutoSaveTimer;
 		public string WName = "default";
 		private ObservableCollection<Note> noteCollection = new ObservableCollection<Note>();
 		public ObservableCollection<Note> NoteCollection
@@ -26,7 +27,13 @@ namespace _10Note.Models
 		public Workspace(string workspaceName = "default")
 		{
 			WName = workspaceName;
+			ApplicationData.Current.DataChanged += Current_DataChanged;
+			Work();
+		}
 
+		private void Current_DataChanged(ApplicationData sender, object args)
+		{
+			AutoSaveTimer.Stop();
 			Work();
 		}
 
@@ -35,7 +42,7 @@ namespace _10Note.Models
 			/*Try to Load*/
 			bool loaded = await LoadWorkspace();
 
-			DispatcherTimer AutoSaveTimer = new DispatcherTimer
+			AutoSaveTimer = new DispatcherTimer
 			{
 				Interval = new TimeSpan(0, 0, 3)
 			};
@@ -69,7 +76,7 @@ namespace _10Note.Models
 		{
 			try
 			{
-				NoteCollection = await SettingsStorageExtensions.ReadAsync<ObservableCollection<Note>>(ApplicationData.Current.LocalFolder, WName);
+				NoteCollection = await SettingsStorageExtensions.ReadAsync<ObservableCollection<Note>>(ApplicationData.Current.RoamingFolder, WName);
 				if (NoteCollection == null)
 					NoteCollection = new ObservableCollection<Note>();
 			}
@@ -84,7 +91,7 @@ namespace _10Note.Models
 		{
 			try
 			{
-				await SettingsStorageExtensions.SaveAsync<ObservableCollection<Note>>(ApplicationData.Current.LocalFolder, WName, NoteCollection);
+				await SettingsStorageExtensions.SaveAsync<ObservableCollection<Note>>(ApplicationData.Current.RoamingFolder, WName, NoteCollection);
 			}
 			catch(Exception e)
 			{

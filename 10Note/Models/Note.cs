@@ -44,7 +44,7 @@ namespace _10Note.Models
 		private void ChooseRandomColor()
 		{
 			Random rand = new Random();
-			Color = rand.Next(0, Enum.GetNames(typeof(COLORS)).Length);
+			//TODO
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;

@@ -102,6 +102,7 @@
     <Compile Include="Helper\JSON.cs" />
     <Compile Include="Helper\SettingsStorageExtensions.cs" />
     <Compile Include="Models\COLORS.cs" />
+    <Compile Include="Models\Converter.cs" />
     <Compile Include="Models\Note.cs" />
     <Compile Include="Models\Workspace.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
