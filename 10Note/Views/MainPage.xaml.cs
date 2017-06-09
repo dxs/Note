@@ -16,6 +16,9 @@ using Windows.UI.Xaml.Navigation;
 using Microsoft.Advertising.WinRT.UI;
 using _10Note.Helper;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Composition;
+using Windows.UI.Xaml.Hosting;
+using System.Numerics;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -33,6 +36,7 @@ namespace _10Note
         {
 			workspace = new Workspace();
 			this.InitializeComponent();
+			applyAcrylicAccent(null);
 			nativeAdsManager = new NativeAdsManager(ID.AppId, ID.MainAdBannerId);
 			nativeAdsManager.RequestAd();
 			nativeAdsManager.AdReady += NativeAd_OnAdReady;
@@ -141,5 +145,83 @@ namespace _10Note
 		{
 			await workspace.SaveWorkspace();
 		}
+
+		#region TextBlock Tab
+
+		private void TextBox_KeyDown(object sender, KeyRoutedEventArgs e)
+		{
+			if (e.Key == Windows.System.VirtualKey.Tab)
+			{
+				var textBox = (TextBox)e.OriginalSource;
+				var originalStartPosition = textBox.SelectionStart;
+
+				// SelectionStart treats "\r\n" as a single character.
+				// So if you've a TextBox with just the text "\r\n" and the cursor is at the end, SelectionStart is
+				// - for a UWP-app: 1
+				// - for a WPF-app: 2
+				// => so for a UWP-app, we need to solve this:
+				var startPosition = GetRealStartPositionTakingCareOfNewLines(originalStartPosition, textBox.Text);
+
+
+
+				var beforeText = textBox.Text.Substring(0, startPosition);
+				var afterText = textBox.Text.Substring(startPosition, textBox.Text.Length - startPosition);
+				var tabSpaces = 4;
+				var tab = new string(' ', tabSpaces);
+				textBox.Text = beforeText + tab + afterText;
+				textBox.SelectionStart = originalStartPosition + tabSpaces;
+
+				e.Handled = true;
+			}
+		}
+
+		private int GetRealStartPositionTakingCareOfNewLines(int startPosition, string text)
+		{
+			int newStartPosition = startPosition;
+			int currentPosition = 0;
+			bool previousWasReturn = false;
+			foreach (var character in text)
+			{
+				if (character == '\n')
+					if (previousWasReturn)
+						newStartPosition++;
+				if (newStartPosition <= currentPosition)
+					break;
+
+				if (character == '\r')
+					previousWasReturn = true;
+				else
+					previousWasReturn = false;
+
+				currentPosition++;
+			}
+			return newStartPosition;
+		}
+
+
+		#endregion
+
+		#region ACRYLIC
+
+		private void applyAcrylicAccent(Panel e)
+		{
+			_compositor = ElementCompositionPreview.GetElementVisual(this).Compositor;
+			_hostSprite = _compositor.CreateSpriteVisual();
+			_hostSprite.Size = new Vector2((float)TransGrid.ActualWidth, (float)TransGrid.ActualHeight);
+
+			ElementCompositionPreview.SetElementChildVisual(
+					TransGrid, _hostSprite);
+			_hostSprite.Brush = _compositor.CreateHostBackdropBrush();
+		}
+		private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+		{
+			if (_hostSprite != null)
+				_hostSprite.Size = e.NewSize.ToVector2();
+		}
+		Compositor _compositor;
+		SpriteVisual _hostSprite;
+
+		#endregion
+
 	}
 }
