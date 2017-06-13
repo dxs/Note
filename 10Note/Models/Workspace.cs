@@ -14,7 +14,7 @@ namespace _10Note.Models
 	public class Workspace : INotifyPropertyChanged
 	{
 		DispatcherTimer AutoSaveTimer;
-		public string WName = "default";
+		private string WName = "default";
 		private ObservableCollection<Note> noteCollection = new ObservableCollection<Note>();
 		public ObservableCollection<Note> NoteCollection
 		{
@@ -24,7 +24,12 @@ namespace _10Note.Models
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		public Workspace(string workspaceName = "default")
+		public Workspace() : this("default")
+		{
+
+		}
+
+		public Workspace(string workspaceName)
 		{
 			WName = workspaceName;
 			ApplicationData.Current.DataChanged += Current_DataChanged;
@@ -40,13 +45,13 @@ namespace _10Note.Models
 		private async void Work()
 		{
 			/*Try to Load*/
-			bool loaded = await LoadWorkspace();
+			await LoadWorkspace().ConfigureAwait(false);
 
 			AutoSaveTimer = new DispatcherTimer
 			{
 				Interval = new TimeSpan(0, 0, 3)
 			};
-			AutoSaveTimer.Tick += async (e, o) => await SaveWorkspace();
+			AutoSaveTimer.Tick += async (e, o) => await SaveWorkspace().ConfigureAwait(false);
 			AutoSaveTimer.Start();
 		}
 

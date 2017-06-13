@@ -29,8 +29,8 @@ namespace _10Note
     /// </summary>
     public sealed partial class MainPage : Page
     {
-		NativeAdsManager nativeAdsManager;
-		Workspace workspace;
+		readonly NativeAdsManager nativeAdsManager;
+		readonly Workspace workspace;
 
         public MainPage()
         {
@@ -50,6 +50,7 @@ namespace _10Note
 
 		private void NativeAd_OnAdReady(object sender, object e)
 		{
+			var codacy = sender as NativeAdsManager;
 			NativeAd nativeAd = (NativeAd)e;
 			TitleBox.Visibility = Visibility.Visible;
 			TitleBox.Text = nativeAd.Title;
@@ -61,25 +62,6 @@ namespace _10Note
 				DescriptionBox.Text = nativeAd.Description;
 				DescriptionBox.Visibility = Visibility.Visible;
 			}
-
-			//if sponsoredBy is not null show sponsoredBy textbox
-			//var sponsoredBy = nativeAd.SponsoredBy;
-			//if (!string.IsNullOrEmpty(sponsoredBy))
-			//{
-			//	SponsoredBy.Text = sponsoredBy;
-			//	SponsoredBy.Visibility = Visibility.Visible;
-			//}
-
-			//if CallToAction is not null update Button
-			//var callToAction = nativeAd.CallToAction;
-			//if (!string.IsNullOrEmpty(callToAction))
-			//{
-			//	CallToAction.Content = callToAction;
-			//	CallToAction.Visibility = Visibility.Visible;
-			//}
-
-			// Assets consists further information about Ad
-			var assets = nativeAd.AdditionalAssets;
 
 			// Loading images
 			var icon = nativeAd.IconImage;
@@ -95,21 +77,6 @@ namespace _10Note
 				IconImageContainer.Visibility = Visibility.Visible;
 			}
 
-			// There might be multiple main images sent by the server
-			//var mainImages = nativeAd.MainImages;
-			//if (mainImages.Count > 0)
-			//{
-			//	var mainImage = mainImages[0];
-			//	var bitmapImage = new BitmapImage();
-			//	bitmapImage.UriSource = new Uri(mainImage.Url);
-			//	MainImage.Source = bitmapImage;
-			//	// Best view when using the Height and Width of the image given
-			//	MainImage.Height = mainImage.Height;
-			//	MainImage.Width = mainImage.Width;
-
-			//	MainImageContainer.Visibility = Visibility.Visible;
-			//}
-
 			// It is required to show the AdIcon in your container
 			NativeAdContainer.Children.Add(nativeAd.AdIcon);
 
@@ -119,6 +86,7 @@ namespace _10Note
 
 		private void CommandBar_Closing(object sender, object e)
 		{
+			e.ToString();
 			CommandBar cb = sender as CommandBar;
 			if (cb != null) cb.Background.Opacity = 0.3;
 
@@ -126,6 +94,7 @@ namespace _10Note
 
 		private void CommandBar_Opening(object sender, object e)
 		{
+			e.ToString();
 			CommandBar cb = sender as CommandBar;
 			if (cb != null) cb.Background.Opacity = 1.0;
 
