@@ -16,6 +16,9 @@ using Windows.UI.Xaml.Navigation;
 using Microsoft.Advertising.WinRT.UI;
 using _10Note.Helper;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Composition;
+using Windows.UI.Xaml.Hosting;
+using System.Numerics;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -26,13 +29,14 @@ namespace _10Note
     /// </summary>
     public sealed partial class MainPage : Page
     {
-		NativeAdsManager nativeAdsManager;
-		Workspace workspace;
+		readonly NativeAdsManager nativeAdsManager;
+		readonly Workspace workspace;
 
         public MainPage()
         {
 			workspace = new Workspace();
 			this.InitializeComponent();
+			applyAcrylicAccent(null);
 			nativeAdsManager = new NativeAdsManager(ID.AppId, ID.MainAdBannerId);
 			nativeAdsManager.RequestAd();
 			nativeAdsManager.AdReady += NativeAd_OnAdReady;
@@ -46,6 +50,7 @@ namespace _10Note
 
 		private void NativeAd_OnAdReady(object sender, object e)
 		{
+			var codacy = sender as NativeAdsManager;
 			NativeAd nativeAd = (NativeAd)e;
 			TitleBox.Visibility = Visibility.Visible;
 			TitleBox.Text = nativeAd.Title;
@@ -57,25 +62,6 @@ namespace _10Note
 				DescriptionBox.Text = nativeAd.Description;
 				DescriptionBox.Visibility = Visibility.Visible;
 			}
-
-			//if sponsoredBy is not null show sponsoredBy textbox
-			//var sponsoredBy = nativeAd.SponsoredBy;
-			//if (!string.IsNullOrEmpty(sponsoredBy))
-			//{
-			//	SponsoredBy.Text = sponsoredBy;
-			//	SponsoredBy.Visibility = Visibility.Visible;
-			//}
-
-			//if CallToAction is not null update Button
-			//var callToAction = nativeAd.CallToAction;
-			//if (!string.IsNullOrEmpty(callToAction))
-			//{
-			//	CallToAction.Content = callToAction;
-			//	CallToAction.Visibility = Visibility.Visible;
-			//}
-
-			// Assets consists further information about Ad
-			var assets = nativeAd.AdditionalAssets;
 
 			// Loading images
 			var icon = nativeAd.IconImage;
@@ -91,21 +77,6 @@ namespace _10Note
 				IconImageContainer.Visibility = Visibility.Visible;
 			}
 
-			// There might be multiple main images sent by the server
-			//var mainImages = nativeAd.MainImages;
-			//if (mainImages.Count > 0)
-			//{
-			//	var mainImage = mainImages[0];
-			//	var bitmapImage = new BitmapImage();
-			//	bitmapImage.UriSource = new Uri(mainImage.Url);
-			//	MainImage.Source = bitmapImage;
-			//	// Best view when using the Height and Width of the image given
-			//	MainImage.Height = mainImage.Height;
-			//	MainImage.Width = mainImage.Width;
-
-			//	MainImageContainer.Visibility = Visibility.Visible;
-			//}
-
 			// It is required to show the AdIcon in your container
 			NativeAdContainer.Children.Add(nativeAd.AdIcon);
 
@@ -115,6 +86,7 @@ namespace _10Note
 
 		private void CommandBar_Closing(object sender, object e)
 		{
+			e.ToString();
 			CommandBar cb = sender as CommandBar;
 			if (cb != null) cb.Background.Opacity = 0.3;
 
@@ -122,6 +94,7 @@ namespace _10Note
 
 		private void CommandBar_Opening(object sender, object e)
 		{
+			e.ToString();
 			CommandBar cb = sender as CommandBar;
 			if (cb != null) cb.Background.Opacity = 1.0;
 
@@ -141,5 +114,83 @@ namespace _10Note
 		{
 			await workspace.SaveWorkspace();
 		}
+
+		#region TextBlock Tab
+
+		private void TextBox_KeyDown(object sender, KeyRoutedEventArgs e)
+		{
+			if (e.Key == Windows.System.VirtualKey.Tab)
+			{
+				var textBox = (TextBox)e.OriginalSource;
+				var originalStartPosition = textBox.SelectionStart;
+
+				// SelectionStart treats "\r\n" as a single character.
+				// So if you've a TextBox with just the text "\r\n" and the cursor is at the end, SelectionStart is
+				// - for a UWP-app: 1
+				// - for a WPF-app: 2
+				// => so for a UWP-app, we need to solve this:
+				var startPosition = GetRealStartPositionTakingCareOfNewLines(originalStartPosition, textBox.Text);
+
+
+
+				var beforeText = textBox.Text.Substring(0, startPosition);
+				var afterText = textBox.Text.Substring(startPosition, textBox.Text.Length - startPosition);
+				var tabSpaces = 4;
+				var tab = new string(' ', tabSpaces);
+				textBox.Text = beforeText + tab + afterText;
+				textBox.SelectionStart = originalStartPosition + tabSpaces;
+
+				e.Handled = true;
+			}
+		}
+
+		private int GetRealStartPositionTakingCareOfNewLines(int startPosition, string text)
+		{
+			int newStartPosition = startPosition;
+			int currentPosition = 0;
+			bool previousWasReturn = false;
+			foreach (var character in text)
+			{
+				if (character == '\n')
+					if (previousWasReturn)
+						newStartPosition++;
+				if (newStartPosition <= currentPosition)
+					break;
+
+				if (character == '\r')
+					previousWasReturn = true;
+				else
+					previousWasReturn = false;
+
+				currentPosition++;
+			}
+			return newStartPosition;
+		}
+
+
+		#endregion
+
+		#region ACRYLIC
+
+		private void applyAcrylicAccent(Panel e)
+		{
+			_compositor = ElementCompositionPreview.GetElementVisual(this).Compositor;
+			_hostSprite = _compositor.CreateSpriteVisual();
+			_hostSprite.Size = new Vector2((float)TransGrid.ActualWidth, (float)TransGrid.ActualHeight);
+
+			ElementCompositionPreview.SetElementChildVisual(
+					TransGrid, _hostSprite);
+			_hostSprite.Brush = _compositor.CreateHostBackdropBrush();
+		}
+		private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+		{
+			if (_hostSprite != null)
+				_hostSprite.Size = e.NewSize.ToVector2();
+		}
+		Compositor _compositor;
+		SpriteVisual _hostSprite;
+
+		#endregion
+
 	}
 }
