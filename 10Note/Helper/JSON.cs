@@ -10,7 +10,7 @@ namespace _10Note.Helper
 			return await Task.Run<T>(() =>
 			{
 				return JsonConvert.DeserializeObject<T>(value);
-			});
+			}).ConfigureAwait(false);
 		}
 
 		public static async Task<string> StringifyAsync(object value)
@@ -18,7 +18,7 @@ namespace _10Note.Helper
 			return await Task.Run<string>(() =>
 			{
 				return JsonConvert.SerializeObject(value);
-			});
+			}).ConfigureAwait(false);
 		}
 	}
 }
