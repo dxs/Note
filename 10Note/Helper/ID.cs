@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace _10Note.Helper
 {
-	public class ID
+	public static class ID
 	{
-		public static string AppId = "9nkspws81xp5";
-		public static string MainAdBannerId = "347313";
+		public static const string AppId = "9nkspws81xp5";
+		public static const string MainAdBannerId = "347313";
 	}
 }
