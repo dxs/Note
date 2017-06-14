@@ -36,7 +36,7 @@ namespace _10Note
         {
 			workspace = new Workspace();
 			this.InitializeComponent();
-			applyAcrylicAccent(null);
+			applyAcrylicAccent(TransGrid);
 			nativeAdsManager = new NativeAdsManager(ID.AppId, ID.MainAdBannerId);
 			nativeAdsManager.RequestAd();
 			nativeAdsManager.AdReady += NativeAd_OnAdReady;
@@ -100,24 +100,24 @@ namespace _10Note
 
 		}
 
-		private void Add_Click(object sender, RoutedEventArgs e)
+		void Add_Click(object sender, RoutedEventArgs e)
 		{
 			workspace.AddNote(new Note("Title","Body"));
 		}
 
-		private void Remove_Click(object sender, RoutedEventArgs e)
+		void Remove_Click(object sender, RoutedEventArgs e)
 		{
 			workspace.RemoveNote(MasterViewList.SelectedItem as Note);
 		}
 
-		private async void Save_Click(object sender, RoutedEventArgs e)
+		async void Save_Click(object sender, RoutedEventArgs e)
 		{
 			await workspace.SaveWorkspace();
 		}
 
 		#region TextBlock Tab
 
-		private void TextBox_KeyDown(object sender, KeyRoutedEventArgs e)
+		void TextBox_KeyDown(object sender, KeyRoutedEventArgs e)
 		{
 			if (e.Key == Windows.System.VirtualKey.Tab)
 			{
@@ -144,7 +144,7 @@ namespace _10Note
 			}
 		}
 
-		private int GetRealStartPositionTakingCareOfNewLines(int startPosition, string text)
+		static int GetRealStartPositionTakingCareOfNewLines(int startPosition, string text)
 		{
 			int newStartPosition = startPosition;
 			int currentPosition = 0;
@@ -176,10 +176,10 @@ namespace _10Note
 		{
 			_compositor = ElementCompositionPreview.GetElementVisual(this).Compositor;
 			_hostSprite = _compositor.CreateSpriteVisual();
-			_hostSprite.Size = new Vector2((float)TransGrid.ActualWidth, (float)TransGrid.ActualHeight);
+			_hostSprite.Size = new Vector2((float)e.ActualWidth, (float)e.ActualHeight);
 
 			ElementCompositionPreview.SetElementChildVisual(
-					TransGrid, _hostSprite);
+					e, _hostSprite);
 			_hostSprite.Brush = _compositor.CreateHostBackdropBrush();
 		}
 		private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
