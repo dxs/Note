@@ -8,7 +8,7 @@ namespace _10Note.Helper
 {
 	public static class ID
 	{
-		public static const string AppId = "9nkspws81xp5";
-		public static const string MainAdBannerId = "347313";
+		public static readonly const string AppId = "9nkspws81xp5";
+		public static readonly const string MainAdBannerId = "347313";
 	}
 }
